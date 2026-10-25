@@ -109,7 +109,12 @@ class _BiggerNumberGameScreenState extends State<BiggerNumberGameScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.only(
+            left: 24.0,
+            right: 24.0,
+            top: 24.0,
+            bottom: 64.0,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -131,21 +136,26 @@ class _BiggerNumberGameScreenState extends State<BiggerNumberGameScreen> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'Points: $points',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  OutlinedButton.icon(
-                    onPressed: resetGame,
-                    icon: const Icon(Icons.refresh, size: 18),
-                    label: const Text('Restart'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Points: $points',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      OutlinedButton.icon(
+                        onPressed: resetGame,
+                        icon: const Icon(Icons.refresh, size: 18),
+                        label: const Text('Restart'),
+                      ),
+                    ],
                   ),
                 ],
               ),

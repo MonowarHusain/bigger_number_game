@@ -53,6 +53,30 @@ class _BiggerNumberGameScreenState extends State<BiggerNumberGameScreen> {
     rightNumber = newRight;
   }
 
+  void checkAnswer(bool isLeftClicked) {
+    final bool isCorrect = isLeftClicked
+        ? leftNumber > rightNumber
+        : rightNumber > leftNumber;
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(isCorrect ? 'Correct!' : 'Incorrect!'),
+        backgroundColor: isCorrect ? Colors.green : Colors.red,
+        duration: const Duration(seconds: 1),
+      ),
+    );
+
+    setState(() {
+      if (isCorrect) {
+        points++;
+      } else {
+        points--;
+      }
+      rollNumbers();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,11 +108,11 @@ class _BiggerNumberGameScreenState extends State<BiggerNumberGameScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => checkAnswer(true),
                     child: Text('$leftNumber'),
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => checkAnswer(false),
                     child: Text('$rightNumber'),
                   ),
                 ],

@@ -16,6 +16,7 @@ class BiggerNumberApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
+        splashFactory: InkRipple.splashFactory,
       ),
       home: const BiggerNumberGameScreen(),
     );
@@ -53,6 +54,21 @@ class _BiggerNumberGameScreenState extends State<BiggerNumberGameScreen> {
     rightNumber = newRight;
   }
 
+  void resetGame() {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Game reset'),
+        duration: Duration(seconds: 1),
+      ),
+    );
+
+    setState(() {
+      points = 0;
+      rollNumbers();
+    });
+  }
+
   void checkAnswer(bool isLeftClicked) {
     final bool isCorrect = isLeftClicked
         ? leftNumber > rightNumber
@@ -80,29 +96,27 @@ class _BiggerNumberGameScreenState extends State<BiggerNumberGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Bigger Number Game!'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: resetGame,
+            tooltip: 'Restart Game',
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                children: const [
-                  Text(
-                    'Bigger Number Game!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    'Press the button of the larger number. If you get it right, you will earn a point! If you get it wrong, you will lose a point.',
-                    style: TextStyle(fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+              const Text(
+                'Press the button of the larger number. If you get it right, you will earn a point! If you get it wrong, you will lose a point.',
+                style: TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -117,12 +131,23 @@ class _BiggerNumberGameScreenState extends State<BiggerNumberGameScreen> {
                   ),
                 ],
               ),
-              Text(
-                'Points: $points',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Points: $points',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  OutlinedButton.icon(
+                    onPressed: resetGame,
+                    icon: const Icon(Icons.refresh, size: 18),
+                    label: const Text('Restart'),
+                  ),
+                ],
               ),
             ],
           ),

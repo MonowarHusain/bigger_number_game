@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -21,8 +22,36 @@ class BiggerNumberApp extends StatelessWidget {
   }
 }
 
-class BiggerNumberGameScreen extends StatelessWidget {
+class BiggerNumberGameScreen extends StatefulWidget {
   const BiggerNumberGameScreen({super.key});
+
+  @override
+  State<BiggerNumberGameScreen> createState() => _BiggerNumberGameScreenState();
+}
+
+class _BiggerNumberGameScreenState extends State<BiggerNumberGameScreen> {
+  int leftNumber = 0;
+  int rightNumber = 0;
+  int points = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    rollNumbers();
+  }
+
+  void rollNumbers() {
+    final random = Random();
+    int newLeft;
+    int newRight;
+    do {
+      newLeft = random.nextInt(100) + 1;
+      newRight = random.nextInt(100) + 1;
+    } while (newLeft == newRight);
+
+    leftNumber = newLeft;
+    rightNumber = newRight;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,17 +85,17 @@ class BiggerNumberGameScreen extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {},
-                    child: const Text('0'),
+                    child: Text('$leftNumber'),
                   ),
                   ElevatedButton(
                     onPressed: () {},
-                    child: const Text('0'),
+                    child: Text('$rightNumber'),
                   ),
                 ],
               ),
-              const Text(
-                'Points: 0',
-                style: TextStyle(
+              Text(
+                'Points: $points',
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
